@@ -1,21 +1,46 @@
-<template>
+<!-- <template>
   <div>
     <h1>TrackList</h1>
 
-    <!-- loop tacklist and display items -->
     <div v-for="track in trackList" :key="track.id">
-      <slot :track="track">
+      <slot :item="track">
         {{ track }}
       </slot>
     </div>
   </div>
+</template> -->
+
+<template>
+  <ul class="list-none m-4 p-4 bg-gradient-to-br from-green-400 to-purple-600 rounded-xl shadow-lg">
+    <li v-for="item in trackList" :key="item.id">
+      <slot :item="item">
+        <a href="#" class="text-white text-lg font-bold hover:text-green-200">{{ item.title }}</a>
+      </slot>
+    </li>
+  </ul>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { ref, defineEmits } from 'vue'
 import type { Track } from '@/types/Track'
+import type { Video } from '@/types/Video'
 
-const trackList = ref<Track[]>([
+const props = defineProps({
+  data: {
+    type: Array as () => T[],
+    required: false
+  }
+})
+// const getComponentType = (track: Track | Video) => {
+//   console.log('track', track)
+//   // check if track is Track type or Video type
+//   if ('url' in track) {
+//     return 'TrackItem'
+//   } else {
+//     return 'TrackItem'
+//   }
+// }
+const trackList = ref<any[]>([
   {
     id: 1,
     title: 'Saudades',
@@ -39,6 +64,24 @@ const trackList = ref<Track[]>([
     album: 'Album 3',
     year: 2021,
     url: '/Maiya_-_In_the_Summer.mp3'
+  },
+  // add new item of Video type
+  {
+    id: 4,
+    title: 'Video 1',
+    thumbnail: 'https://i.ytimg.com/vi/5qap5aO4i9A/hqdefault.jpg',
+    url: '/nieve.mp4'
   }
 ])
 </script>
+
+<!-- <template>
+    <div v-for="track in trackList" :key="track.id">
+      <component :is="getComponentType(track)" :track="track">
+        <template #default="slotProps">
+          {{ slotProps.track }}
+        </template>
+      </component>
+  </div>
+</template>
+ -->

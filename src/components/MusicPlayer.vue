@@ -34,7 +34,7 @@ const props = defineProps({
 })
 
 const isPlaying = ref(false)
-const audioSource = ref('')
+const audioSource = ref<Track>()
 const audioPlayer = ref<HTMLMediaElement>()
 const muted = ref(false)
 const onTimeUpdate = () => {
