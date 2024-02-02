@@ -27,8 +27,8 @@ export function usePlayer() {
   const isPlayingAudio = ref(false)
   // Toggles play and pause
   const togglePlay = () => {
-    console.log('togglePlay', player.value)
-    if (!player.value) return
+    if (!player.value || !player.value.src?.length) return
+    console.log('togglePlay', player.value.src)
     debugger
     if (state.isPlaying) {
       player.value.pause()
@@ -78,5 +78,5 @@ export function usePlayer() {
   // onUnmounted(removeEventListeners)
 
   const refState = toRefs(state)
-  return { player, refState, togglePlay, toggleMute, loadTrack, setVideoElement, isPlayingAudio }
+  return { player, ...refState, togglePlay, toggleMute, loadTrack, setVideoElement, isPlayingAudio }
 }

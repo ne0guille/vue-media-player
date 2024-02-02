@@ -1,8 +1,10 @@
-export type Video = {
-  id: string
-  title: string
-  description: string
+import { MEDIA_TYPE, type Media } from './Media'
+
+type VideoDetails = {
+  type: typeof MEDIA_TYPE.VIDEO
   thumbnail: string
-  duration: number
-  url: string
+  description: string
+  year?: number
 }
+
+export type Video = VideoDetails & Media

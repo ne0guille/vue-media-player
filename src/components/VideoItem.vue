@@ -53,7 +53,6 @@ const itemClass = computed(() => {
 
 const emit = defineEmits(['selected'])
 const onSelect = (params: any) => {
-  console.log('selected', params.target.getAttribute('data-video-name'))
-  emit('selected', params.target.getAttribute('data-video-name'))
+  emit('selected', props.data)
 }
 </script>

@@ -1,11 +1,12 @@
-export type Track = {
-  id: string | number
-  title: string
+import type { MEDIA_TYPE, Media } from './Media'
+
+type TrackDetails = {
+  type: typeof MEDIA_TYPE.TRACK
   artist: string
   album: string
-  duration: number
   image: string
   preview: string
-  url: string
   year?: number
 }
+
+export type Track = Media & TrackDetails
