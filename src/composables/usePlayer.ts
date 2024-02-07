@@ -6,7 +6,7 @@ interface PlayerProps {
   isMuted: boolean
   currentTime: number
   duration: number
-  videoRef: HTMLMediaElement | null
+  videoRef?: HTMLMediaElement | null
 }
 const player = ref<HTMLMediaElement | null>(null)
 // let player: ref<Html()
@@ -18,13 +18,19 @@ const state = reactive<PlayerProps>({
 })
 
 export function usePlayer() {
-  const setVideoElement = (element) => {
+  const setVideoElement = (element: HTMLMediaElement | null) => {
     console.log('setVideoElement', element)
     player.value = element
-    // Initialize player with player or add event listeners as needed
+    resetPlayer()
   }
 
-  const isPlayingAudio = ref(false)
+  const resetPlayer = () => {
+    state.isPlaying = false
+    state.isMuted = false
+    state.currentTime = 0
+    state.duration = 0
+  }
+
   // Toggles play and pause
   const togglePlay = () => {
     if (!player.value || !player.value.src?.length) return
@@ -36,7 +42,6 @@ export function usePlayer() {
       player.value.play()
     }
     state.isPlaying = !state.isPlaying
-    isPlayingAudio.value = state.isPlaying
     console.log('isPlaying', state.isPlaying)
   }
 
@@ -78,5 +83,5 @@ export function usePlayer() {
   // onUnmounted(removeEventListeners)
 
   const refState = toRefs(state)
-  return { player, ...refState, togglePlay, toggleMute, loadTrack, setVideoElement, isPlayingAudio }
+  return { player, ...refState, togglePlay, toggleMute, loadTrack, setVideoElement }
 }

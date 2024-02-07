@@ -4,21 +4,21 @@
       <h1 class="text-3xl text-center text-gray-100">Vue Media Player</h1>
     </section>
     <SearchForm />
-    <VideoPlayer
-      :setVideoElement="setVideoElement"
+
+    <MediaPlayer
+      :mediaType="selectedMedia?.type"
       :src="selectedMedia?.url"
-      @togglePlay="togglePlay"
+      :setPlayerRef="setPlayerRef"
+      @toggle-play="togglePlay"
     />
-    <TrackList :data="trackList">
-      <template #default="{ item }">
-        <component
-          :is="getComponentType(item)"
-          :data="item"
-          @selected="handleTrackSelected"
-          :isSelected="item.url === selectedMedia?.url"
-        />
+    <Suspense @pending="pending" @fallback="fallback" @resolve="resolve" timeout="0">
+      <template #default>
+        <MediaList />
       </template>
-    </TrackList>
+      <template #fallback>
+        <LoadingSpinner />
+      </template>
+    </Suspense>
   </main>
 
   <FooterPlayer :title="formattedTitle">
@@ -36,34 +36,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, type DefineComponent } from 'vue'
-import type { Media, MediaType } from './types/Media'
-import TrackList from './components/TrackList.vue'
+import { ref, computed, onMounted } from 'vue'
+import type { Media } from './types/Media'
+import MediaList from './components/MediaList.vue'
 import SearchForm from './components/Search/SearchForm.vue'
-import VideoPlayer from './components/VideoPlayer.vue'
 import FooterPlayer from './components/FooterPlayer.vue'
 import { usePlayer } from './composables/usePlayer'
 import { faVolumeMute, faVolumeHigh, faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { formatFunctions, getComponentType } from './utils/mediaUtils'
 import { mediaList } from '@/data/fake-media'
+import MediaPlayer from './components/MediaPlayer.vue'
+import LoadingSpinner from './components/LoadingSpinner.vue'
+// const trackList = ref<Media[]>()
+// const getList = async () => {
+//   console.log('Getting list...')
+//   await new Promise((resolve) => setTimeout(resolve, 2000))
+//   console.log('Got list!')
+//   trackList.value = mediaList
+// }
 
-const trackList = ref<Media[]>()
+// onMounted(async () => {
+//   await getList()
+// })
 
-onMounted(() => {
-  setTimeout(() => {
-    trackList.value = mediaList
-  }, 1000)
-})
+const fallback = () => {
+  console.log('Fallback...')
+}
+const pending = () => {
+  console.log('Pending...')
+}
+const resolve = () => {
+  console.log('Resolved!')
+}
 
 const { isPlaying, isMuted, togglePlay, toggleMute, setVideoElement } = usePlayer()
 const playIcon = computed(() => (isPlaying.value ? faPause : faPlay))
 const volumeIcon = computed(() => (isMuted.value ? faVolumeMute : faVolumeHigh))
-
-const selectedMedia = ref<Media | undefined>()
-const handleTrackSelected = (media: Media) => {
-  selectedMedia.value = media
+const setPlayerRef = (player: HTMLMediaElement) => {
+  console.log('Setting player ref', player)
+  setVideoElement(player)
 }
+const selectedMedia = ref<Media | undefined>()
 const formattedTitle = computed(() => {
   const media = selectedMedia.value
   if (!media) {

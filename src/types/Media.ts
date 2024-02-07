@@ -1,3 +1,6 @@
+import type { Track } from './Track'
+import type { Video } from './Video'
+
 export type Media = {
   id: string | number
   type: MediaType
@@ -12,3 +15,5 @@ export const MEDIA_TYPE = {
 } as const
 
 export type MediaType = (typeof MEDIA_TYPE)[keyof typeof MEDIA_TYPE]
+
+export type MediaSource = Video | Track

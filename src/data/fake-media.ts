@@ -2,7 +2,7 @@ import { MEDIA_TYPE, type Media } from '@/types/Media'
 import type { Track } from '@/types/Track'
 import type { Video } from '@/types/Video'
 
-export const mediaList = [
+export const mockedMediaList = [
   {
     id: 1,
     title: 'Saudades',
