@@ -46,6 +46,23 @@ const props = defineProps({
     default: true
   }
 })
+
+// export interface Props {
+//   data: Video
+//   isSelected: Boolean
+// }
+
+// const props = withDefaults(defineProps<Props>(), {
+//   data: {
+//     id: 1,
+//     duration: 0,
+//     title: 'Default Title',
+//     type: 'video',
+//     thumbnail: 'https://via.placeholder.com/150',
+//     url: 'https://via.placeholder.com/150'
+//   },
+//   isSelected: true
+// })
 // make font bold when item is selected in a computed property
 const itemClass = computed(() => {
   return props.isSelected ? 'bold' : 'normal'

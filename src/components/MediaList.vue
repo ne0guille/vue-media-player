@@ -12,15 +12,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import type { Media } from '../types/Media'
 import TrackList from './TrackList.vue'
 import { getComponentType } from '../utils/mediaUtils'
 import { mockedMediaList } from '@/data/fake-media'
+import { usePlayer } from '../composables/usePlayer'
 
-const selectedMedia = ref<Media | undefined>()
+const { loadTrack, selectedMedia } = usePlayer()
 const handleTrackSelected = (media: Media) => {
-  selectedMedia.value = media
+  loadTrack(media)
 }
 
 const trackList = ref<Media[]>()

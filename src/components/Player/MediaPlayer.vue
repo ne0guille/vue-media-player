@@ -2,19 +2,17 @@
 
 <template>
   <div class="audio-player">
+    <h1 class="text-xl text-red-600">media type {{ props.mediaType }}</h1>
     <div v-if="props.mediaType === 'track'">
       <h3>Track</h3>
-      <audio v-media-ref="props.setPlayerRef" :src="source">
+      <audio v-media-ref="props.setPlayerRef" :src="props.src">
         Your browser does not support the audio tag.
       </audio>
     </div>
 
-    <!-- <video v-else-if="props.mediaType === 'video'" v-media-ref="props.setPlayerRef" :src="source">
-      Your browser does not support the video tag.
-    </video> -->
     <div v-else-if="props.mediaType === 'video'">
       <h3 class="text-xl">VIDEO</h3>
-      <VideoPlayer :src="source" />
+      <VideoPlayer :src="props.src" />
     </div>
 
     <div class="controls">
@@ -29,32 +27,20 @@
 import type { MediaType } from '@/types/Media'
 import VideoPlayer from './VideoPlayer.vue'
 import { ref, watch, nextTick, defineProps } from 'vue'
-
+// TODO ver como forzar los valores MediaType al pasarlos
 const props = defineProps({
   src: {
-    type: String,
-    required: true
+    type: String
   },
   setPlayerRef: {
     type: Function,
     required: true
   },
   mediaType: {
-    type: String as () => MediaType,
-    required: true
+    type: String as () => MediaType
   }
 })
-const source = ref<string>()
+
 const emit = defineEmits(['togglePlay'])
 const togglePlay = () => emit('togglePlay')
-watch(
-  () => props.src,
-  (newVal) => {
-    if (newVal) {
-      source.value = newVal
-      nextTick(() => {})
-    }
-  },
-  { immediate: true }
-)
 </script>

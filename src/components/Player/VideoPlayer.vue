@@ -25,6 +25,7 @@ const props = defineProps({
     required: true
   }
 })
+
 const videoSource = ref<string>()
 
 watch(
