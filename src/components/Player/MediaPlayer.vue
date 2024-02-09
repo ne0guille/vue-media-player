@@ -2,45 +2,40 @@
 
 <template>
   <div class="audio-player">
-    <h1 class="text-xl text-red-600">media type {{ props.mediaType }}</h1>
-    <div v-if="props.mediaType === 'track'">
-      <h3>Track</h3>
-      <audio v-media-ref="props.setPlayerRef" :src="props.src">
-        Your browser does not support the audio tag.
-      </audio>
+    <div v-if="selectedMedia?.type === 'track'">
+      <MusicPlayer :track="selectedMedia" :is-muted="isMuted" :set-player="setPlayerElement" />
     </div>
 
-    <div v-else-if="props.mediaType === 'video'">
+    <div v-else-if="selectedMedia?.type === 'video'">
       <h3 class="text-xl">VIDEO</h3>
-      <VideoPlayer :src="props.src" />
+      <VideoPlayer
+        :src="selectedMedia?.url"
+        :set-player="setPlayerElement"
+        :is-playing="isPlaying"
+        :toggle-play="togglePlay"
+      />
     </div>
 
-    <div class="controls">
+    <!-- <div class="controls">
       <slot name="controls">
-        <button @click="togglePlay">Play audio</button>
+        <button class="p-4 bg-green-300 text-black" @click="emit('togglePlay')">Play Media</button>
       </slot>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import type { MediaType } from '@/types/Media'
 import VideoPlayer from './VideoPlayer.vue'
-import { ref, watch, nextTick, defineProps } from 'vue'
-// TODO ver como forzar los valores MediaType al pasarlos
-const props = defineProps({
-  src: {
-    type: String
-  },
-  setPlayerRef: {
-    type: Function,
-    required: true
-  },
-  mediaType: {
-    type: String as () => MediaType
-  }
-})
+import MusicPlayer from './MusicPlayer.vue'
+import { usePlayer } from '@/composables/usePlayer'
+const { isMuted, selectedMedia, setPlayerElement, togglePlay, isPlaying } = usePlayer()
 
-const emit = defineEmits(['togglePlay'])
-const togglePlay = () => emit('togglePlay')
+// TODO ver como forzar los valores MediaType al pasarlos
+// const props = defineProps({
+//   media: {
+//     type: Object as () => Media
+//   }
+// })
+
+// const emit = defineEmits(['togglePlay'])
 </script>

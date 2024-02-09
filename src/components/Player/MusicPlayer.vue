@@ -1,79 +1,32 @@
 <template>
-  <div class="music-player">
+  <section class="music-player">
     <h1>MUSIIIIICCCCCC</h1>
-    <audio
-      ref="audioPlayer"
-      :src="audioSource"
-      @ended="onTrackEnd"
-      :muted="muted"
-      @timeupdate="onTimeUpdate"
-    ></audio>
-    <div class="controls">
-      <button @click="togglePlay">{{ isPlaying ? 'Pause' : 'Play' }}</button>
-      <button @click="toogleMuted">{{ muted ? 'Unmute' : 'Mute' }}</button>
-
-      <!-- Add more controls as needed -->
+    <div v-if="track" class="flex justify-center w-full">
+      <img class="rounded-full" :src="track.image || DEFAULT_IMG" width="250" height="160" />
+      <audio v-media-ref="setPlayer" :src="track.url" :muted="isMuted"></audio>
     </div>
-    <!-- Displaying current track info -->
-    <div class="track-info">
-      <p>currentTrack {{ props.currentTrack }}</p>
-      <h2>audioSource {{ audioSource }}</h2>
-      <!-- Add more info like artist, duration, etc. -->
+    <div class="flex justify-center text-lg text-pink-500">
+      <p>Album: {{ props.track.album }} - {{ props.track.year }}</p>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, watch } from 'vue'
 import type { Track } from '@/types/Track'
+import { DEFAULT_IMG } from '@/utils/constants'
+
 const props = defineProps({
-  currentTrack: {
+  track: {
     type: Object as () => Track,
     required: true
+  },
+  setPlayer: {
+    type: Function,
+    required: true
+  },
+  isMuted: {
+    type: Boolean,
+    default: false
   }
 })
-
-const isPlaying = ref(false)
-const audioSource = ref<Track>()
-const audioPlayer = ref<HTMLMediaElement>()
-const muted = ref(false)
-const onTimeUpdate = () => {
-  console.log('time updated')
-}
-
-watch(
-  () => props.currentTrack,
-  (newVal, oldVal) => {
-    if (newVal) {
-      console.log('new track', newVal)
-      audioSource.value = newVal
-      nextTick(() => {
-        audioPlayer.value?.play()
-        isPlaying.value = true
-      })
-    }
-  }
-)
-
-const onvolumechange = () => {
-  console.log('volume changed')
-}
-
-
-const toogleMuted = () => {
-  muted.value = !muted.value
-}
-
-const togglePlay = () => {
-  if (isPlaying.value) {
-    audioPlayer.value?.pause()
-  } else {
-    audioPlayer.value?.play()
-  }
-  isPlaying.value = !isPlaying.value
-}
-const onTrackEnd = () => {
-  console.log('Track ended')
-  isPlaying.value = false
-}
 </script>

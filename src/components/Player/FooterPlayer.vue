@@ -5,10 +5,9 @@
     <div class="track-info text-lg font-semibold flex items-center justify-center">
       <slot name="prefix" :icon="footerIcon"> </slot>
 
-      <p v-if="props.title" class="whitespace-nowrap">
-        <span> {{ props.title }} </span>
+      <p class="whitespace-nowrap">
+        <span> {{ formattedTitle }} </span>
       </p>
-      <p v-else>Select a media from the list</p>
     </div>
     <div class="controls mt-4 flex justify-center">
       <slot name="controls" :handlePlay="togglePlay" :handleMute="toggleMute">
@@ -36,19 +35,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { usePlayer } from '@/composables/usePlayer'
+import { formatFunctions } from '@/utils/mediaUtils'
 const { isPlaying, isMuted, selectedMedia, togglePlay, toggleMute } = usePlayer()
 
 defineSlots<{
   controls?: (props: { handlePlay: () => void; handleMute: () => void }) => any
   prefix?: (props: { icon: any }) => any
 }>()
-const props = defineProps({
-  title: {
-    type: String,
-    required: true
-  }
-})
 
+const formattedTitle = computed(() => {
+  const media = selectedMedia?.value
+  return media ? formatFunctions[media.type](media) : 'Select a media to play'
+})
 const playIcon = computed(() => (isPlaying.value ? faPause : faPlay))
 const volumeIcon = computed(() => (isMuted.value ? faVolumeMute : faVolumeHigh))
 const footerIcon = computed(() => {
