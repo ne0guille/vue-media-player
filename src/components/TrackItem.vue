@@ -29,7 +29,7 @@ const props = defineProps({
 })
 
 const itemClass = computed(() => {
-  return props.isSelected ? '  glow-text' : ''
+  return props.isSelected ? '  text-shadow-magenta-deep-purple' : ''
 })
 
 const emit = defineEmits(['selected'])

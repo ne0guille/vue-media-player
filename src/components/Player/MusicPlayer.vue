@@ -2,7 +2,7 @@
   <section
     class="music-player bg-gradient-to-r from-green-400 to-blue-500 p-6 rounded-lg shadow-xl text-white"
   >
-    <h1 class="text-3xl font-bold text-center mb-4 glow">MUSIIIIICCCCCC</h1>
+    <h1 class="text-3xl font-bold text-center mb-4 text-shadow-hotpink-light">MUSIIIIICCCCCC</h1>
     <div v-if="track" class="flex flex-col items-center justify-center w-full mb-4">
       <img
         :src="track.image || DEFAULT_IMG"
@@ -11,7 +11,7 @@
       <audio v-media-ref="setPlayer" :src="track.url" :muted="isMuted"></audio>
     </div>
     <div class="text-center text-lg">
-      <p class="glow">Album: {{ props.track.album }} - {{ props.track.year }}</p>
+      <p class="text-shadow-pink-glow">Album: {{ props.track.album }} - {{ props.track.year }}</p>
     </div>
   </section>
 </template>
