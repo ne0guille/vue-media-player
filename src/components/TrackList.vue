@@ -1,6 +1,6 @@
 <template>
   <ul class="list-none m-4 p-4 bg-gray-700 rounded-xl shadow-lg">
-    <li v-for="item in props.data" :key="item.id">
+    <li class="cursor-pointer" v-for="item in props.data" :key="item.id">
       <slot :item="item"> {{ item }} </slot>
     </li>
   </ul>

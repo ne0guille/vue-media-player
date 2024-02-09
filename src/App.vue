@@ -7,7 +7,7 @@
     <MediaPlayer
       :mediaType="selectedMedia?.type"
       :src="selectedMedia?.url"
-      :setPlayerRef="setPlayerRef"
+      :setPlayerRef="setVideoElement"
       @toggle-play="togglePlay"
     />
     <Suspense timeout="0">
@@ -21,16 +21,15 @@
   </main>
 
   <FooterPlayer :title="formattedTitle">
-    <template #controls>
-      <div class="flex items-center gap-4 justify-center">
-        <button class="btn-primary" @click="togglePlay">
-          <FontAwesomeIcon :icon="playIcon" />
-        </button>
-        <button class="btn-primary" @click="toggleMute">
-          <FontAwesomeIcon :icon="volumeIcon" />
-        </button>
-      </div>
+    <template #prefix="{ icon }">
+      <FontAwesomeIcon class="mx-2" :icon="icon" />
     </template>
+    <!-- <template #controls="{ handlePlay, handleMute }">
+      <div class="flex items-center gap-4 justify-center">
+        <button class="btn-primary" @click="handlePlay">Click</button>
+        <button class="btn-primary" @click="handleMute">Clask</button>
+      </div>
+    </template> -->
   </FooterPlayer>
 </template>
 
@@ -40,21 +39,16 @@ import MediaList from './components/MediaList.vue'
 import SearchForm from './components/Search/SearchForm.vue'
 import FooterPlayer from './components/Player/FooterPlayer.vue'
 import { usePlayer } from './composables/usePlayer'
-import { faVolumeMute, faVolumeHigh, faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { formatFunctions } from './utils/mediaUtils'
 import MediaPlayer from './components/Player/MediaPlayer.vue'
 import LoadingSpinner from './components/LoadingSpinner.vue'
 
-const { isPlaying, isMuted, togglePlay, toggleMute, setVideoElement, selectedMedia } = usePlayer()
-const playIcon = computed(() => (isPlaying.value ? faPause : faPlay))
-const volumeIcon = computed(() => (isMuted.value ? faVolumeMute : faVolumeHigh))
+const { togglePlay, setVideoElement, selectedMedia } = usePlayer()
+
 const formattedTitle = computed(() => {
   const media = selectedMedia?.value
   return media ? formatFunctions[media.type](media) : 'Select a media to play'
 })
-
-const setPlayerRef = (player: HTMLMediaElement) => {
-  setVideoElement(player)
-}
 </script>
