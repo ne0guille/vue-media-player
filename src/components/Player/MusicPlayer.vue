@@ -54,21 +54,12 @@ watch(
     }
   }
 )
-// implem,ent on volume change
+
 const onvolumechange = () => {
   console.log('volume changed')
 }
 
-// const test = () => {
-//   console.log('loaded')
-//   nextTick(() => {
-//     audioPlayer.value?.play()
-//   })
-// }
-// onMounted(() => {
-//   //@ts-ignore
-//   audioPlayer.value?.play()
-// })
+
 const toogleMuted = () => {
   muted.value = !muted.value
 }

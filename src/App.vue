@@ -55,7 +55,6 @@ const formattedTitle = computed(() => {
 })
 
 const setPlayerRef = (player: HTMLMediaElement) => {
-  console.log('Setting player ref', player)
   setVideoElement(player)
 }
 </script>

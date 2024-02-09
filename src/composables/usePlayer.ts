@@ -22,7 +22,6 @@ const state = reactive<PlayerProps>({
 
 export function usePlayer() {
   const setVideoElement = (element: HTMLMediaElement | null) => {
-    console.log('setVideoElement', element)
     player.value = element
     resetPlayer()
   }
@@ -37,14 +36,12 @@ export function usePlayer() {
   const togglePlay = () => {
     if (!player.value || !player.value.src?.length) return
     console.log('togglePlay', player.value.src)
-    debugger
     if (state.isPlaying) {
       player.value.pause()
     } else {
       player.value.play()
     }
     state.isPlaying = !state.isPlaying
-    console.log('isPlaying', state.isPlaying)
   }
   const toggleMute = () => {
     if (!player.value) return
