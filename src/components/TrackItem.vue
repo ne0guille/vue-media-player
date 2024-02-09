@@ -2,8 +2,8 @@
   <div
     class="flex flex-col justify-center items-center bg-gradient-to-br from-green-400 to-purple-600 m-4 p-4 rounded-xl shadow-lg transform hover:scale-105 transition-transform"
   >
-    <a @click="onSelect" class="text-white hover:text-yellow-300" :class="itemClass">
-      <span :data-song-name="data.url" class="text-xl font-bold tracking-wider"
+    <a @click="onSelect" class="text-white" :class="itemClass">
+      <span :data-song-name="data.url" class="hover:text-pink-300 text-xl font-bold tracking-wider"
         >{{ props.data.title }} - {{ props.data.artist }}</span
       >
     </a>
@@ -29,7 +29,7 @@ const props = defineProps({
 })
 
 const itemClass = computed(() => {
-  return props.isSelected ? ' text-yellow-300' : ''
+  return props.isSelected ? '  glow-text' : ''
 })
 
 const emit = defineEmits(['selected'])

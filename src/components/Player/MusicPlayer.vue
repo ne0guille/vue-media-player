@@ -1,12 +1,17 @@
 <template>
-  <section class="music-player">
-    <h1>MUSIIIIICCCCCC</h1>
-    <div v-if="track" class="flex justify-center w-full">
-      <img class="rounded-full" :src="track.image || DEFAULT_IMG" width="250" height="160" />
+  <section
+    class="music-player bg-gradient-to-r from-green-400 to-blue-500 p-6 rounded-lg shadow-xl text-white"
+  >
+    <h1 class="text-3xl font-bold text-center mb-4 glow">MUSIIIIICCCCCC</h1>
+    <div v-if="track" class="flex flex-col items-center justify-center w-full mb-4">
+      <img
+        :src="track.image || DEFAULT_IMG"
+        class="w-64 h-40 object-cover rounded-lg shadow-2xl mb-4"
+      />
       <audio v-media-ref="setPlayer" :src="track.url" :muted="isMuted"></audio>
     </div>
-    <div class="flex justify-center text-lg text-pink-500">
-      <p>Album: {{ props.track.album }} - {{ props.track.year }}</p>
+    <div class="text-center text-lg">
+      <p class="glow">Album: {{ props.track.album }} - {{ props.track.year }}</p>
     </div>
   </section>
 </template>
